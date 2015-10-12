@@ -1,0 +1,69 @@
+package ${package}.entity;
+import java.util.*;
+import java.io.Serializable;
+
+import com.bj58.sfft.utility.dao.annotation.Column;
+import com.bj58.sfft.utility.dao.annotation.Id;
+import com.bj58.sfft.utility.dao.annotation.NotDBColumn;
+import com.bj58.sfft.utility.dao.annotation.Table;
+import com.bj58.spat.scf.serializer.component.annotation.SCFMember;
+import com.bj58.spat.scf.serializer.component.annotation.SCFSerializable;
+import com.bj58.dao.adapter.entity.IEntity;
+import com.bj58.dao.adapter.annotation.Strategy;
+
+/**
+ * ClassName：$!{table.getUpperCaseName()}Entity<br>
+ * Description：数据库中 $!{table.dbtablename}表对应的实体类        .<br>
+ * <p>company：58同城 <br>
+ * Copyright：Copyright © 2011 58.com All Rights Reserved<br>
+ *
+ * @author auto
+ * @Date 2011-7-30 21:47:50
+ * @since JRE 1.6.0_22  or higher
+ */
+@Table(name = "${table.dbtablename}")
+@SCFSerializable
+@Strategy
+public class $!{table.getUpperCaseName()}Entity  implements IEntity<Long>,Serializable {
+	/**
+	 * 
+	 */
+	@NotDBColumn
+	private static final long serialVersionUID = 1L;
+	
+	#foreach($col in $!table.columns)
+	
+		/**
+		 * $!{col.desc}
+		 */
+		#if($!{col.pk}=="1")
+		@Id(insertable = true)
+		#end
+		@Column(name="${col.dbname}")
+		@SCFMember()
+		private $!{col.javaType} $!{col.javaname};
+	#end
+	
+	
+	#foreach($col in $!table.columns)
+		public $!{col.javaType} get$!{col.getUpperCol("${col.javaname}")}() {
+			return $!{col.javaname};
+		}
+		public void set$!{col.getUpperCol("${col.javaname}")}($!{col.javaType} $!{col.javaname}) {
+			this.$!{col.javaname} = $!{col.javaname};
+		}
+	#end
+	
+	
+		@Override
+	public Long getIdent() {
+		// TODO Auto-generated method stub
+		return getId();
+	}
+
+	@Override
+	public int getUpVersion() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+}
