@@ -1,0 +1,46 @@
+package ${clazz.getDaoPackage()};
+
+import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+ @Repository
+public interface I$!{clazz.getClassName()}Dao {
+
+
+  @Select("select ${clazz.getSelectFieldList()} " +
+          "from ${table.dbTableName} where id = #{id}")
+  $!{clazz.getClassName()}DO getById(@Param("id") int id);
+
+  @Insert("insert into ${table.dbTableName}(${clazz.getInsertFieldList()}) values (" +
+          "${clazz.getInsertValueList()})")
+  @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+  void add($!{clazz.getClassName()}DO $!{table.javaTableName}DO);
+
+  @Update("update ${table.dbTableName} set column=value where id=#{id}")
+  void update($!{clazz.getClassName()}DO $!{table.javaTableName}DO);
+
+  List<$!{clazz.getClassName()}DO> getPageList(@Param("param") $!{clazz.getClassName()}DO where,
+                               @Param("orderField") String orderField, @Param("orderType") String orderType,
+                               @Param("offset") int offset, @Param("limit") int limit);
+
+
+  int count(@Param("param") $!{clazz.getClassName()}DO where);
+
+
+
+}
+
+

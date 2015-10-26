@@ -1,0 +1,26 @@
+package ${clazz.getServicePackage()};;
+
+import ${clazz.getDomainPackage()}.$!{clazz.getClassName()}DO;
+import ${clazz.getParamPackage()}.$!{clazz.getClassName()}Param;
+
+import java.util.List;
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+public interface I$!{clazz.getClassName()}Service {
+  List<$!{clazz.getClassName()}DO> getPageList($!{clazz.getClassName()}Param param,int offset,int limit);
+
+  int count($!{clazz.getClassName()}Param param);
+
+
+  $!{clazz.getClassName()}DO add($!{clazz.getClassName()}Param $!{table.javaTableName}Param);
+
+  $!{clazz.getClassName()}DO update($!{clazz.getClassName()}Param $!{table.javaTableName}Param);
+
+  $!{clazz.getClassName()}DO getById(int id);
+}

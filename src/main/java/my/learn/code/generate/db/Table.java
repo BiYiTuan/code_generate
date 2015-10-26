@@ -5,81 +5,49 @@ import java.util.List;
 
 public class Table {
 
-	private String tablename;
+	private String javaTableName;
 	
-	private String dbtablename;
+	private String dbTableName;
 	
-	private String pkJavaType;
+//	private String pkJavaType;
+//
+//	public String getPkJavaType() {
+//		return pkJavaType;
+//	}
+//
+//	public void setPkJavaType(String pkJavaType) {
+//		this.pkJavaType = pkJavaType;
+//	}
 
-	public String getPkJavaType() {
-		return pkJavaType;
+	public String getDbTableName() {
+		return dbTableName;
 	}
 
-	public void setPkJavaType(String pkJavaType) {
-		this.pkJavaType = pkJavaType;
-	}
-
-	public String getDbtablename() {
-		return dbtablename;
-	}
-
-	public void setDbtablename(String dbtablename) {
-		this.dbtablename = dbtablename;
+	public void setDbTableName(String dbTableName) {
+		this.dbTableName = dbTableName;
 	}
 
 	private List<Column> columns=new ArrayList<Column>();
 
-	public String getTablename() {
-		return tablename;
+	public String getJavaTableName() {
+		return javaTableName;
 	}
 
-	public void setTablename(String tablename) {
-		this.tablename = tablename;
+	public void setJavaTableName(String javaTableName) {
+		this.javaTableName = javaTableName;
 	}
 
 	public List<Column> getColumns() {
 		return columns;
 	}
 
-	public void setColumns(List<Column> columns) {
-		this.columns = columns;
-	}
 
-	public static String getFormatTablename(String name) {
-		try {
-			// 按照规定所有的tablename 均已t_开始，转换后所有的表名称全部去掉t_并且转换成小写
-			return name.replaceFirst("t_", "").toLowerCase();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return name;
-	}
+
+
 	
-	public String getUpperCaseName(){
-		return tablename.substring(0,1).toUpperCase()+tablename.substring(1);
-	}
+//	public String getUpperCaseName(){
+//		return javaTableName.substring(0,1).toUpperCase()+ javaTableName.substring(1);
+//	}
 	
-	public String getPackagingName(){
-		if("int".equals(pkJavaType))
-			return Integer.class.getSimpleName();
-		else if ("long".equals(pkJavaType))
-			return Long.class.getSimpleName();
-		
-		else if ("double".equals(pkJavaType))
-			return Double.class.getSimpleName();
-		
-		else if ("short".equals(pkJavaType))
-			return Short.class.getSimpleName();
-		
-		else if ("float".equals(pkJavaType))
-			return Float.class.getSimpleName();
-		
-		else if ("byte".equals(pkJavaType))
-			return Byte.class.getSimpleName();
-		
-		else if ("boolean".equals(pkJavaType))
-			return Boolean.class.getSimpleName();
-		else
-			return "";
-	}
+
 }

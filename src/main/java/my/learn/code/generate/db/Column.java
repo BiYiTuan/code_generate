@@ -2,9 +2,9 @@ package my.learn.code.generate.db;
 
 public class Column {
 
-	private String javaname;
+	private String javaName;
 
-	private String dbname;
+	private String dbName;
 
 	private String javaType;
 
@@ -24,20 +24,20 @@ public class Column {
 		return javaType;
 	}
 
-	public String getJavaname() {
-		return javaname;
+	public String getJavaName() {
+		return javaName;
 	}
 
-	public void setJavaname(String javaname) {
-		this.javaname = javaname;
+	public void setJavaName(String javaName) {
+		this.javaName = javaName;
 	}
 
-	public String getDbname() {
-		return dbname;
+	public String getDbName() {
+		return dbName;
 	}
 
-	public void setDbname(String dbname) {
-		this.dbname = dbname;
+	public void setDbName(String dbName) {
+		this.dbName = dbName;
 	}
 
 	public void setJavaType(String javaType) {
@@ -52,21 +52,21 @@ public class Column {
 		this.dbType = dbType;
 	}
 
-	private String pk = "0";
-
-
-	
-	
-	public String getPk() {
-		return pk;
-	}
-
-	public void setPk(String pk) {
-		this.pk = pk;
-	}
-
-	public String getUpperCol(String col){
-		return col.substring(0,1).toUpperCase()+col.substring(1);
-	}
+//	private String pk = "0";
+//
+//
+//
+//
+//	public String getPk() {
+//		return pk;
+//	}
+//
+//	public void setPk(String pk) {
+//		this.pk = pk;
+//	}
+//
+//	public String getUpperCol(String col){
+//		return col.substring(0,1).toUpperCase()+col.substring(1);
+//	}
 
 }

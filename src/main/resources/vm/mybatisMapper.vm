@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="${clazz.getDaoPackage()}.I$!{clazz.getClassName()}Dao">
+
+    <sql id="where_sql">
+        where 1=1
+    #foreach($col in $!clazz.getTable().columns)
+                #if(${col.javaType}=='String')
+        <if test="param.${col.javaName} != null and param.${col.javaName} != '' ">
+            and ${col.dbName} like "%"#{param.${col.javaName}}"%"
+        </if>
+                #elseif(${col.javaType} == 'int' || ${col.javaType} == 'long')
+        <if test="param.${col.javaName} != 0  ">
+            and ${col.dbName} = #{param.${col.javaName}}
+        </if>
+                #elseif(${col.javaType} == 'Date')
+        <if test="param.${col.javaName} != null  ">
+            and ${col.dbName} = #{param.${col.javaName}}
+        </if>
+            	#end
+            #end
+
+    </sql>
+
+
+
+
+    <select id="getPageList" resultType="${clazz.getDomainPackage()}.$!{clazz.getClassName()}DO">
+        select ${clazz.getSelectFieldList()}
+        from ${table.dbTableName}
+       <include refid="where_sql"/>
+
+        <if test="orderField != null and orderField != '' ">
+            order by ${orderField} ${orderType}
+        </if>
+
+        limit #{offset},#{limit}
+    </select>
+
+    <select id="count" resultType="Integer" parameterType="${clazz.getDomainPackage()}.$!{clazz.getClassName()}DO">
+        select count(*) from ${table.dbTableName}  <include refid="where_sql"/>
+    </select>
+</mapper>

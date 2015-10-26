@@ -1,0 +1,68 @@
+package ${clazz.getServicePackage()}.impl;
+
+import ${clazz.getDaoPackage()}.I${clazz.getClassName()}Dao;
+import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
+
+import ${clazz.getParamPackage()}.${clazz.getClassName()}Param;
+import ${clazz.getServicePackage()}.I${clazz.getClassName()}Service;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
+import org.apache.commons.lang.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+@Service
+public class ${clazz.getClassName()}ServiceImpl implements I${clazz.getClassName()}Service{
+
+  @Autowired
+  private I${clazz.getClassName()}Dao ${table.javaTableName}Dao;
+
+  @Override
+  public List getPageList(${clazz.getClassName()}Param param, int offset, int limit) {
+
+   ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+
+    List<${clazz.getClassName()}DO> ${table.javaTableName}DOList = ${table.javaTableName}Dao.getPageList(${table.javaTableName}DO,null,null, offset, limit);
+    if (CollectionUtils.isEmpty(commentDOList)) return ListUtils.EMPTY_LIST;
+
+    return commentDOList;
+  }
+
+  @Override
+  public int count(${clazz.getClassName()}Param param) {
+     ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+    return ${table.javaTableName}Dao.count(${table.javaTableName}DO);
+  }
+
+  private ${clazz.getClassName()}DO add(${clazz.getClassName()}Param ${table.javaTableName}Param) {
+    ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+
+    ${table.javaTableName}Dao.add(${table.javaTableName}DO);
+
+   return ${table.javaTableName}DO;
+  }
+
+  @Override
+  public $!{clazz.getClassName()}DO update($!{clazz.getClassName()}Param $!{table.javaTableName}Param){
+    ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+    ${table.javaTableName}Dao.update(${table.javaTableName}DO);
+  }
+  
+  @Override
+  public $!{clazz.getClassName()}DO getById(int id) {
+
+    return $!{table.javaTableName}Dao.getById(id);
+  }
+}

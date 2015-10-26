@@ -1,0 +1,35 @@
+package ${clazz.getDomainPackage()};
+
+import java.util.Date;
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+public class $!{clazz.getClassName()}DO {
+
+#foreach($col in $!table.columns)
+#if(${col.desc} && ${col.desc} != '')
+	/**
+	 * $!{col.desc}
+	 */
+#end
+	private $!{col.javaType} $!{col.javaName};
+#end
+
+
+#foreach($col in $!table.columns)
+	public $!{col.javaType} get$!{StringUtils.firstLetterUpcase("${col.javaName}")}() {
+		return $!{col.javaName};
+	}
+
+	public void set$!{StringUtils.firstLetterUpcase("${col.javaName}")}($!{col.javaType} $!{col.javaName}) {
+		this.$!{col.javaName} = $!{col.javaName};
+	}
+
+#end
+
+}

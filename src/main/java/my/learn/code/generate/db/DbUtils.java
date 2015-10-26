@@ -1,126 +1,38 @@
 package my.learn.code.generate.db;
 
-import java.io.File;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import my.learn.code.generate.utils.GlobalsParam;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.PropertyConfigurator;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
 
 
 
 public class DbUtils {
 	private static Log log = LogFactory.getLog(DbUtils.class);
 
-	public static List<Table> getAllTableFromDb() {
-		List<Table> tablelist = new ArrayList<Table>(1000);
-		try {
-			Class.forName(GlobalsParam.getPreference("DriversClass"));
-			Connection conn = DriverManager.getConnection(
-					GlobalsParam.getPreference("ConnetionURL"),
-					GlobalsParam.getPreference("UserName"),
-					GlobalsParam.getPreference("PassWord"));
-			PreparedStatement pstmt = null;
-			ResultSetMetaData rsmd = null;
-			ResultSet rs = null;
-			ResultSet pkrs = null;
-			Map<String, String> pkmap = null;
-			Map<String, String> descmap = null;
-			if (conn == null) {
-				log.info("无法获取数据库连接");
-				return null;
-			}
-			DatabaseMetaData databaseMetaData = conn.getMetaData();
-			
-			ResultSet tablers = databaseMetaData.getTables(null, "%", "%",
-					new String[] { "TABLE" });
-			while (tablers.next()) {
-				pkmap = new HashMap<String, String>();
-				descmap=new HashMap<String, String>();
-				Table tb = new Table();
-
-				String tableName = tablers.getString("TABLE_NAME");
-				// System.out.println(Table.getFormatTablename(tableName));
-				tb.setTablename(convertName(Table.getFormatTablename(tableName)));
-				tb.setDbtablename(tableName);
-
-				pkrs = databaseMetaData.getPrimaryKeys(null, null, tableName);
-				while (pkrs.next()) {
-					pkmap.put(pkrs.getString(4), null);
-					// System.err.println("COLUMN_NAME: " + pkrs.getObject(4));
-				}
-				
-				
-				ResultSet columnSet = databaseMetaData.getColumns(null, "%",
-						tableName, "%");
-				while(columnSet.next()){
-					String columnName = columnSet.getString("COLUMN_NAME");
-					  //备注
-					String columnComment = columnSet.getString("REMARKS");
-					descmap.put(columnName, columnComment);
-				}
-				
-				
-
-				pstmt = conn.prepareStatement("SELECT * FROM " + tableName +" limit 1");
-				rs = pstmt.executeQuery();
-				rsmd = rs.getMetaData();
-				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-					Column cn = new Column();
-					cn.setDbType(rsmd.getColumnTypeName(i));
-					cn.setJavaname(convertName(rsmd.getColumnName(i).toLowerCase()));
-					cn.setDbname(rsmd.getColumnName(i));
-					cn.setJavaType(mysqlType2JavaType(cn.getDbType()));
-					cn.setDesc(descmap.get(cn.getDbname()));
-					if (pkmap.containsKey(cn.getDbname())) {
-						cn.setPk("1");
-						tb.setPkJavaType(cn.getJavaType());
-					}
-					tb.getColumns().add(cn);
-				}
-				tablelist.add(tb);
-				pstmt = null;
-				rsmd = null;
-				rs = null;
-				pkrs = null;
-				pkmap = null;
-				columnSet=null;
-				descmap=null;
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return tablelist;
-	}
-
-	public static Table getTableByName(){
+	public static Table getTableByName(String tableName,DataSource db){
 		Connection conn=null;
 		PreparedStatement pstmt =null;
 		ResultSet rs = null;
 		try {
-			Class.forName(GlobalsParam.getPreference("DriversClass"));
-			 conn = DriverManager.getConnection(
-					GlobalsParam.getPreference("ConnetionURL"),
-					GlobalsParam.getPreference("UserName"),
-					GlobalsParam.getPreference("PassWord"));
-			 pstmt = conn.prepareStatement("select column_name,data_type,comumn_comment from information_schema.columns where table_name =?  and TABLE_SCHEMA=?");
+			Class.forName(db.getDriversClass());
+			 conn = DriverManager.getConnection(db.getConnetionURL(), db.getUserName(),db.getPassword());
+			 pstmt = conn.prepareStatement("select column_name,data_type,column_comment from information_schema.columns where table_name =?  and TABLE_SCHEMA=?");
 
-			String tableName = GlobalsParam.getPreference("tablename");
+
 			pstmt.setString(1,tableName);
-			pstmt.setString(2,GlobalsParam.getPreference("database"));
+			pstmt.setString(2,db.getDatabase());
 			Table tb = new Table();
 
 			// System.out.println(Table.getFormatTablename(tableName));
-			tb.setTablename(convertName(Table.getFormatTablename(tableName)));
-			tb.setDbtablename(tableName);
+			tb.setJavaTableName(convertName(tableName.replace("dss_","")));
+			tb.setDbTableName(tableName);
 
 			 rs = pstmt.executeQuery();
 
@@ -130,12 +42,13 @@ public class DbUtils {
 				String dbType = rs.getString("data_type");
 				cn.setDbType(dbType);
 				cn.setJavaType(mysqlType2JavaType(cn.getDbType()));
-				String dbName = rs.getString("column_name").toLowerCase();
-				cn.setJavaname(convertName(dbName));
-				cn.setDbname(dbName);
 
-				cn.setDesc(rs.getString("comumn_comment"));
-//				if (pkmap.containsKey(cn.getDbname())) {
+				String dbName = rs.getString("column_name").toLowerCase();
+				cn.setJavaName(convertName(dbName));
+				cn.setDbName(dbName);
+
+				cn.setDesc(rs.getString("column_comment"));
+//				if (pkmap.containsKey(cn.getDbName())) {
 //					cn.setPk("1");
 //					tb.setPkJavaType(cn.getJavaType());
 //				}
@@ -182,73 +95,60 @@ public class DbUtils {
 		
 		int l=cls.length;
 		for(int i=1;i<l ;i++){
-			sb.append(firstLetterUpcase(cls[i]));
+			sb.append(my.learn.code.generate.utils.StringUtils.firstLetterUpcase(cls[i]));
 		}
 		return sb.toString();
 	}
-	public static String firstLetterUpcase(String str){
-		return str.substring(0, 1).toUpperCase() + str.substring(1);
-	}
-	private static String mysqlType2JavaType(String mysqltype) {
-		if (StringUtils.isBlank(mysqltype))
+
+	private static String mysqlType2JavaType(String mysqlType) {
+		if (StringUtils.isBlank(mysqlType))
 			return "";
-		if ("VARCHAR".equalsIgnoreCase(mysqltype))
+		if ("VARCHAR".equalsIgnoreCase(mysqlType))
 			return String.class.getSimpleName();
-		else if ("CHAR".equalsIgnoreCase(mysqltype))
+		else if ("CHAR".equalsIgnoreCase(mysqlType))
 			return String.class.getSimpleName();
-		else if ("BLOB".equalsIgnoreCase(mysqltype))
+		else if ("BLOB".equalsIgnoreCase(mysqlType))
 			return byte[].class.getSimpleName();
-		else if ("TEXT".equalsIgnoreCase(mysqltype))
+		else if ("TEXT".equalsIgnoreCase(mysqlType))
 			return String.class.getSimpleName();
-		else if ("INT".equalsIgnoreCase(mysqltype))
+		else if ("INT".equalsIgnoreCase(mysqlType))
 			return int.class.getSimpleName();
-		else if ("INTEGER".equalsIgnoreCase(mysqltype))
+		else if ("INTEGER".equalsIgnoreCase(mysqlType))
 			return int.class.getSimpleName();
-		else if ("TINYINT".equalsIgnoreCase(mysqltype))
+		else if ("TINYINT".equalsIgnoreCase(mysqlType))
 			return short.class.getSimpleName();
-		else if ("SMALLINT".equalsIgnoreCase(mysqltype))
+		else if ("SMALLINT".equalsIgnoreCase(mysqlType))
 			return int.class.getSimpleName();
-		else if ("MEDIUMINT".equalsIgnoreCase(mysqltype))
+		else if ("MEDIUMINT".equalsIgnoreCase(mysqlType))
 			return int.class.getSimpleName();
-		else if ("BIT".equalsIgnoreCase(mysqltype))
+		else if ("BIT".equalsIgnoreCase(mysqlType))
 			return boolean.class.getSimpleName();
-		else if ("BIGINT".equalsIgnoreCase(mysqltype))
+		else if ("BIGINT".equalsIgnoreCase(mysqlType))
 			return long.class.getSimpleName();
-		else if ("FLOAT".equalsIgnoreCase(mysqltype))
+		else if ("FLOAT".equalsIgnoreCase(mysqlType))
 			return float.class.getSimpleName();
-		else if ("DOUBLE".equalsIgnoreCase(mysqltype))
+		else if ("DOUBLE".equalsIgnoreCase(mysqlType))
 			return double.class.getSimpleName();
-		else if ("DECIMAL".equalsIgnoreCase(mysqltype))
+		else if ("DECIMAL".equalsIgnoreCase(mysqlType))
 			return double.class.getSimpleName();
-		else if ("BOOLEAN".equalsIgnoreCase(mysqltype))
+		else if ("BOOLEAN".equalsIgnoreCase(mysqlType))
 			return short.class.getSimpleName();
-		else if ("ID".equalsIgnoreCase(mysqltype))
+		else if ("ID".equalsIgnoreCase(mysqlType))
 			return long.class.getSimpleName();
-		else if ("DATE".equalsIgnoreCase(mysqltype))
+		else if ("DATE".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
-		else if ("TIME".equalsIgnoreCase(mysqltype))
+		else if ("TIME".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
-		else if ("DATETIME".equalsIgnoreCase(mysqltype))
+		else if ("DATETIME".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
-		else if ("TIMESTAMP".equalsIgnoreCase(mysqltype))
+		else if ("TIMESTAMP".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
-		else if ("YEAR".equalsIgnoreCase(mysqltype))
+		else if ("YEAR".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
 		else
 			return "";
 
 	}
 
-	public static void main(String[] args) {
-		
-		String column="asdf_234_fff";
-		String[] cls=column.split("_");
-		StringBuffer sb=new StringBuffer(cls[0]);
-		
-		int l=cls.length;
-		for(int i=1;i<l ;i++){
-			sb.append(cls[i].toUpperCase());
-		}
-		System.out.println(sb.toString());
-	}
+
 }

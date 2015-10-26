@@ -1,0 +1,111 @@
+package ${clazz.getControllerPackage()};
+
+import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
+import ${clazz.getModelPackage()}.ApiResultModel;
+import ${clazz.getModelPackage()}.${clazz.getClassName()}ListModel;
+import ${clazz.getModelPackage()}.${clazz.getClassName()}Model;
+import ${clazz.getParamPackage()}.${clazz.getClassName()}Param;
+import ${clazz.getServicePackage()}.I${clazz.getClassName()}Service;
+import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+@Controller
+public class ${clazz.getClassName()}Controller {
+
+    private static final Logger log = LoggerFactory.getLogger(${clazz.getClassName()}Controller.class);
+
+    @Autowired
+    private I${clazz.getClassName()}Service ${table.javaTableName}Service;
+
+    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ApiResultModel add() {
+
+        ApiResultModel objectModel = new ApiResultModel();
+
+        try {
+
+            ${clazz.getClassName()}Param param = new ${clazz.getClassName()}Param();
+
+
+            ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.add(param);
+            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(commentDO);
+            objectModel.setData(${table.javaTableName}Model);
+
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            objectModel.setStatus(-1);
+            objectModel.setMessage(e.getMessage());
+        }
+
+        return objectModel;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ApiResultModel update() {
+
+        ApiResultModel objectModel = new ApiResultModel();
+
+        try {
+
+            ${clazz.getClassName()}Param param = new ${clazz.getClassName()}Param();
+
+           ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.update(param);
+            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(commentDO);
+            objectModel.setData(${table.javaTableName}Model);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            objectModel.setStatus(-1);
+            objectModel.setMessage(e.getMessage());
+        }
+
+        return objectModel;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ApiResultModel getPageList() {
+
+        try {
+
+            ${clazz.getClassName()}Param param = new ${clazz.getClassName()}Param();
+
+            int count = ${table.javaTableName}Service.count(param);
+            if (count == 0) {
+                return ApiResultModel.emptyModel(offset, limit);
+            }
+
+            List<${clazz.getClassName()}DO> doList = ${table.javaTableName}Service.getPageList(param, offset, limit);
+
+            List<${clazz.getClassName()}ListModel> ${table.javaTableName}ListModels = new ArrayList<${clazz.getClassName()}ListModel>(CollectionUtils.size(doList));
+            ${clazz.getClassName()}ListModel model;
+            for (${clazz.getClassName()}DO ${table.javaTableName}DO : doList) {
+                model = new ${clazz.getClassName()}ListModel(${table.javaTableName}DO);
+                ${table.javaTableName}ListModels.add(model);
+            }
+
+            return new ApiResultModel(${table.javaTableName}ListModels, count, offset, limit);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ApiResultModel.errorModel(e.getMessage(), offset, limit);
+        }
+    }
+}
