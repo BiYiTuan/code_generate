@@ -2,7 +2,6 @@ package ${clazz.getControllerPackage()};
 
 import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
 import ${clazz.getModelPackage()}.ApiResultModel;
-import ${clazz.getModelPackage()}.${clazz.getClassName()}ListModel;
 import ${clazz.getModelPackage()}.${clazz.getClassName()}Model;
 import ${clazz.getParamPackage()}.${clazz.getClassName()}Param;
 import ${clazz.getServicePackage()}.I${clazz.getClassName()}Service;
@@ -43,7 +42,7 @@ public class ${clazz.getClassName()}Controller {
 
 
             ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.add(param);
-            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(commentDO);
+            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
             objectModel.setData(${table.javaTableName}Model);
 
 
@@ -67,7 +66,7 @@ public class ${clazz.getClassName()}Controller {
             ${clazz.getClassName()}Param param = new ${clazz.getClassName()}Param();
 
            ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.update(param);
-            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(commentDO);
+            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
             objectModel.setData(${table.javaTableName}Model);
 
         } catch (Exception e) {
@@ -82,7 +81,10 @@ public class ${clazz.getClassName()}Controller {
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ApiResultModel getPageList() {
+    public ApiResultModel getPageList(@RequestParam(defaultValue = "0") int offset,
+                                    @RequestParam(defaultValue = "10") int limit,
+                                    @RequestParam(required = false) String sortField,
+                                    @RequestParam(required = false) String sortType) {
 
         try {
 
@@ -95,14 +97,14 @@ public class ${clazz.getClassName()}Controller {
 
             List<${clazz.getClassName()}DO> doList = ${table.javaTableName}Service.getPageList(param, offset, limit);
 
-            List<${clazz.getClassName()}ListModel> ${table.javaTableName}ListModels = new ArrayList<${clazz.getClassName()}ListModel>(CollectionUtils.size(doList));
-            ${clazz.getClassName()}ListModel model;
+            List<${clazz.getClassName()}Model> ${table.javaTableName}Models = new ArrayList<${clazz.getClassName()}Model>(CollectionUtils.size(doList));
+            ${clazz.getClassName()}Model model;
             for (${clazz.getClassName()}DO ${table.javaTableName}DO : doList) {
-                model = new ${clazz.getClassName()}ListModel(${table.javaTableName}DO);
-                ${table.javaTableName}ListModels.add(model);
+                model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
+                ${table.javaTableName}Models.add(model);
             }
 
-            return new ApiResultModel(${table.javaTableName}ListModels, count, offset, limit);
+            return new ApiResultModel(${table.javaTableName}Models, count, offset, limit);
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResultModel.errorModel(e.getMessage(), offset, limit);

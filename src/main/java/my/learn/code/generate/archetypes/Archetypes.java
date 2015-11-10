@@ -134,7 +134,7 @@ public class Archetypes {
     }
 
     public String getParamPath() {
-        return this.getDefaultJavaPackagePath() + this.paramFolder;
+        return this.getDefaultJavaPackagePath() + "/" + this.paramFolder;
     }
 
     public String getAuthor() {

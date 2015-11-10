@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Date;
 import java.util.List;
@@ -32,37 +33,43 @@ public class ${clazz.getClassName()}ServiceImpl implements I${clazz.getClassName
   @Override
   public List getPageList(${clazz.getClassName()}Param param, int offset, int limit) {
 
-   ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+  // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
 
-    List<${clazz.getClassName()}DO> ${table.javaTableName}DOList = ${table.javaTableName}Dao.getPageList(${table.javaTableName}DO,null,null, offset, limit);
-    if (CollectionUtils.isEmpty(commentDOList)) return ListUtils.EMPTY_LIST;
+   // List<${clazz.getClassName()}DO> ${table.javaTableName}DOList = ${table.javaTableName}Dao.getPageList(${table.javaTableName}DO,null,null, offset, limit);
+   // if (CollectionUtils.isEmpty(${table.javaTableName}DOList)) return ListUtils.EMPTY_LIST;
 
-    return commentDOList;
+    //return ${table.javaTableName}DOList;
+
+    throw new NotImplementedException();
   }
 
   @Override
   public int count(${clazz.getClassName()}Param param) {
-     ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
-    return ${table.javaTableName}Dao.count(${table.javaTableName}DO);
+    // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+    //return ${table.javaTableName}Dao.count(${table.javaTableName}DO);
+    throw new NotImplementedException();
   }
 
-  private ${clazz.getClassName()}DO add(${clazz.getClassName()}Param ${table.javaTableName}Param) {
-    ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+   public ${clazz.getClassName()}DO add(${clazz.getClassName()}Param ${table.javaTableName}Param) {
+   // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
 
-    ${table.javaTableName}Dao.add(${table.javaTableName}DO);
+   // ${table.javaTableName}Dao.add(${table.javaTableName}DO);
 
-   return ${table.javaTableName}DO;
+   //return ${table.javaTableName}DO;
+    throw new NotImplementedException();
   }
 
   @Override
   public $!{clazz.getClassName()}DO update($!{clazz.getClassName()}Param $!{table.javaTableName}Param){
-    ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
-    ${table.javaTableName}Dao.update(${table.javaTableName}DO);
+   // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+   // ${table.javaTableName}Dao.update(${table.javaTableName}DO);
+    throw new NotImplementedException();
   }
   
   @Override
   public $!{clazz.getClassName()}DO getById(int id) {
 
-    return $!{table.javaTableName}Dao.getById(id);
+   // return $!{table.javaTableName}Dao.getById(id);
+    throw new NotImplementedException();
   }
 }

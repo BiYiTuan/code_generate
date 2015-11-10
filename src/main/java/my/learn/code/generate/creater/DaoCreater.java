@@ -19,7 +19,7 @@ import java.util.Map;
 public class DaoCreater extends AbstractCreater{
 
   @Override protected String getFilePath(ClazzUtils clazz) {
-    return clazz.getArchetypes().getDaoPath() + "/" + clazz.getClassName() + "Dao.java";
+    return clazz.getArchetypes().getDaoPath() + "/I" + clazz.getClassName() + "Dao.java";
   }
 
   @Override protected String getTemplate() {

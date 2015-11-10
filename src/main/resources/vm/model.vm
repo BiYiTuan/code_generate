@@ -1,0 +1,22 @@
+package ${clazz.getModelPackage()};
+
+import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
+
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+public class $!{clazz.getClassName()}Model {
+
+    public $!{clazz.getClassName()}Model($!{clazz.getClassName()}DO $!{clazz.javaTableName}DO){
+
+    }
+
+
+}
+
+

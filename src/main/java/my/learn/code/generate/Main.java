@@ -27,22 +27,26 @@ public class Main {
 
 		Archetypes archetypes = new Archetypes(config);
 
-		// 生成必要的目录结构
-		ArchetypesCreater.createrFolder(archetypes);
+
 
 		DataSource db= new DataSource(config);
 
-		Table table = DbUtils.getTableByName("dss_notice",db);
+		Table table = DbUtils.getTableByName("destination_base",db);
 
 		ClazzUtils clazz = new ClazzUtils(archetypes,table);
+
+		// 生成必要的目录结构
+		ArchetypesCreater.createrFolder(archetypes);
 
 		DomainCreater.getInstance().create(clazz);
 		DaoCreater.getInstance().create(clazz);
 		MybatisXMLMapperCreater.getInstance().create(clazz);
 		ServiceCreater.getInstance().create(clazz);
 		ServiceImplCreater.getInstance().create(clazz);
-		ControllerCreater.getInstance().create(clazz);
+		ModelCreater.getInstance().create(clazz);
 
+//		ParamCreater.getInstance().create(clazz);
+		ControllerCreater.getInstance().create(clazz);
 
 
 

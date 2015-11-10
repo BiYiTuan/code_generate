@@ -3,6 +3,7 @@ package my.learn.code.generate.creater;
 import my.learn.code.generate.archetypes.ClazzUtils;
 import my.learn.code.generate.utils.DateUtils;
 import my.learn.code.generate.utils.FileUtils;
+import my.learn.code.generate.utils.StringUtils;
 import my.learn.code.generate.utils.VelocityUtils;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public abstract class AbstractCreater {
             hm.put("date", DateUtils.formatYMD(new Date()));
             hm.put("time", DateUtils.formatHMS(new Date()));
             hm.put("clazz",clazz);
+            hm.put("StringUtils",new StringUtils());
 
 
             String str = VelocityUtils.mergeTemplate(hm, getTemplate());
@@ -36,7 +38,7 @@ public abstract class AbstractCreater {
             File f = FileUtils
                     .getFile(getFilePath(clazz));
             if(f.exists()){ //TODO
-                //        return;
+//                   return;
             }
 
             org.apache.commons.io.FileUtils.write(f,str,"UTF-8");

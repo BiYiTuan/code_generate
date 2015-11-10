@@ -1,0 +1,20 @@
+package ${clazz.getParamPackage()};
+
+
+/**
+ * Desc:
+ * ------------------------------------
+ * Author: ${clazz.archetypes.author}
+ * Date: ${date}
+ * Time: ${time}
+ */
+public class $!{clazz.getClassName()}Param {
+
+
+
+
+
+
+}
+
+

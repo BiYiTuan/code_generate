@@ -20,10 +20,15 @@ public class ArchetypesCreater {
     createDomainFolder(archetypes);
     createModelFolder(archetypes);
     createServiceFolder(archetypes);
+    createParamFolder(archetypes);
 
 	}
 
-  private static void createMybatisXMLMapperFolder(Archetypes archetypes) {
+    private static void createParamFolder(Archetypes archetypes) {
+        createFolderIfNotExist(archetypes.getParamPath());
+    }
+
+    private static void createMybatisXMLMapperFolder(Archetypes archetypes) {
     createFolderIfNotExist(archetypes.getMybatisXMLMapperPath());
 
   }

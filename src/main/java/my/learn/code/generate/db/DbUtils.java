@@ -111,6 +111,8 @@ public class DbUtils {
 			return byte[].class.getSimpleName();
 		else if ("TEXT".equalsIgnoreCase(mysqlType))
 			return String.class.getSimpleName();
+		else if ("LONGTEXT".equalsIgnoreCase(mysqlType))
+			return String.class.getSimpleName();
 		else if ("INT".equalsIgnoreCase(mysqlType))
 			return int.class.getSimpleName();
 		else if ("INTEGER".equalsIgnoreCase(mysqlType))
@@ -145,6 +147,9 @@ public class DbUtils {
 			return Date.class.getSimpleName();
 		else if ("YEAR".equalsIgnoreCase(mysqlType))
 			return Date.class.getSimpleName();
+		else if ("MEDIUMTEXT".equalsIgnoreCase(mysqlType)){
+			return String.class.getSimpleName();
+		}
 		else
 			return "";
 

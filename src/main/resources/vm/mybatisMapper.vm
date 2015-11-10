@@ -11,7 +11,7 @@
         <if test="param.${col.javaName} != null and param.${col.javaName} != '' ">
             and ${col.dbName} like "%"#{param.${col.javaName}}"%"
         </if>
-                #elseif(${col.javaType} == 'int' || ${col.javaType} == 'long')
+                #elseif(${col.javaType} == 'int' || ${col.javaType} == 'long' || || ${col.javaType} == 'short')
         <if test="param.${col.javaName} != 0  ">
             and ${col.dbName} = #{param.${col.javaName}}
         </if>
@@ -28,7 +28,7 @@
 
 
     <select id="getPageList" resultType="${clazz.getDomainPackage()}.$!{clazz.getClassName()}DO">
-        select ${clazz.getSelectFieldList()}
+        select ${clazz.getInsertFieldList()}
         from ${table.dbTableName}
        <include refid="where_sql"/>
 
