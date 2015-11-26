@@ -1,6 +1,7 @@
 package ${clazz.getModelPackage()};
 
 import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
+import org.springframework.beans.BeanUtils;
 
 
 /**
@@ -12,11 +13,42 @@ import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
  */
 public class $!{clazz.getClassName()}Model {
 
-    public $!{clazz.getClassName()}Model($!{clazz.getClassName()}DO $!{clazz.javaTableName}DO){
+    #foreach($col in $!table.columns)
+        #if(${col.desc} && ${col.desc} != '')
+        /**
+        * $!{col.desc}
+        */
+        #end
+    #if($!{col.javaType} == 'Date')
+    private String $!{col.javaName};
+    #else
+    private $!{col.javaType} $!{col.javaName};
+    #end
+    #end
 
+    public $!{clazz.getClassName()}Model($!{clazz.getClassName()}DO $!{clazz.javaTableName}DO){
+        BeanUtils.copyProperties($!{clazz.javaTableName}DO,this,new String[]{"createTime","updateTime"});
     }
 
+    #foreach($col in $!table.columns)
+    #if($!{col.javaType} == 'Date')
+    public String get$!{StringUtils.firstLetterUpcase("${col.javaName}")}() {
+        return $!{col.javaName};
+    }
 
+    public void set$!{StringUtils.firstLetterUpcase("${col.javaName}")}(String $!{col.javaName}) {
+        this.$!{col.javaName} = $!{col.javaName};
+    }
+    #else
+    public $!{col.javaType} get$!{StringUtils.firstLetterUpcase("${col.javaName}")}() {
+        return $!{col.javaName};
+    }
+
+    public void set$!{StringUtils.firstLetterUpcase("${col.javaName}")}($!{col.javaType} $!{col.javaName}) {
+        this.$!{col.javaName} = $!{col.javaName};
+    }
+    #end
+    #end
 }
 
 

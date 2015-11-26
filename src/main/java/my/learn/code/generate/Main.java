@@ -31,12 +31,12 @@ public class Main {
 
 		DataSource db= new DataSource(config);
 
-		Table table = DbUtils.getTableByName("destination_base",db);
+		Table table = DbUtils.getTableByName("dss_food",db,"dss_");
 
 		ClazzUtils clazz = new ClazzUtils(archetypes,table);
 
 		// 生成必要的目录结构
-		ArchetypesCreater.createrFolder(archetypes);
+//		ArchetypesCreater.createrFolder(archetypes);
 
 		DomainCreater.getInstance().create(clazz);
 		DaoCreater.getInstance().create(clazz);
@@ -45,7 +45,7 @@ public class Main {
 		ServiceImplCreater.getInstance().create(clazz);
 		ModelCreater.getInstance().create(clazz);
 
-//		ParamCreater.getInstance().create(clazz);
+		ParamCreater.getInstance().create(clazz);
 		ControllerCreater.getInstance().create(clazz);
 
 

@@ -10,7 +10,38 @@ package ${clazz.getParamPackage()};
  */
 public class $!{clazz.getClassName()}Param {
 
+#foreach($col in $!table.columns)
+    #if(${col.desc} && ${col.desc} != '')
+    /**
+    * $!{col.desc}
+    */
+    #end
+    #if($!{col.javaType} == 'Date')
+    private String $!{col.javaName};
+    #else
+    private $!{col.javaType} $!{col.javaName};
+    #end
+#end
 
+#foreach($col in $!table.columns)
+    #if($!{col.javaType} == 'Date')
+    public String get$!{StringUtils.firstLetterUpcase("${col.javaName}")}() {
+    return $!{col.javaName};
+    }
+
+    public void set$!{StringUtils.firstLetterUpcase("${col.javaName}")}(String $!{col.javaName}) {
+    this.$!{col.javaName} = $!{col.javaName};
+    }
+    #else
+    public $!{col.javaType} get$!{StringUtils.firstLetterUpcase("${col.javaName}")}() {
+    return $!{col.javaName};
+    }
+
+    public void set$!{StringUtils.firstLetterUpcase("${col.javaName}")}($!{col.javaType} $!{col.javaName}) {
+    this.$!{col.javaName} = $!{col.javaName};
+    }
+    #end
+#end
 
 
 

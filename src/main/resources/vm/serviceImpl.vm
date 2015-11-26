@@ -1,14 +1,12 @@
 package ${clazz.getServicePackage()}.impl;
 
+import com.google.common.base.Preconditions;
 import ${clazz.getDaoPackage()}.I${clazz.getClassName()}Dao;
 import ${clazz.getDomainPackage()}.${clazz.getClassName()}DO;
 
 import ${clazz.getParamPackage()}.${clazz.getClassName()}Param;
 import ${clazz.getServicePackage()}.I${clazz.getClassName()}Service;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.lang.StringUtils;
+import ${clazz.getModelPackage()}.PageModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,27 +29,21 @@ public class ${clazz.getClassName()}ServiceImpl implements I${clazz.getClassName
   private I${clazz.getClassName()}Dao ${table.javaTableName}Dao;
 
   @Override
-  public List getPageList(${clazz.getClassName()}Param param, int offset, int limit) {
+  public PageModel<$!{clazz.getClassName()}DO> getPageList(${clazz.getClassName()}Param param, int offset, int limit) {
 
-  // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
-
-   // List<${clazz.getClassName()}DO> ${table.javaTableName}DOList = ${table.javaTableName}Dao.getPageList(${table.javaTableName}DO,null,null, offset, limit);
-   // if (CollectionUtils.isEmpty(${table.javaTableName}DOList)) return ListUtils.EMPTY_LIST;
-
-    //return ${table.javaTableName}DOList;
-
-    throw new NotImplementedException();
+     ${clazz.getClassName()}DO  ${table.javaTableName}DO = new ${clazz.getClassName()}DO();
+     int count = ${table.javaTableName}Dao.count(${table.javaTableName}DO);
+     if (count == 0){
+        return PageModel.emptyModel();
+     }
+     List<${clazz.getClassName()}DO> ${table.javaTableName}DOList = ${table.javaTableName}Dao.getPageList(${table.javaTableName}DO, "id", "asc", offset, limit);
+    // return PageModel.newIntence(${clazz.getClassName()}DOList,count);
+     throw new NotImplementedException();
   }
 
-  @Override
-  public int count(${clazz.getClassName()}Param param) {
-    // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
-    //return ${table.javaTableName}Dao.count(${table.javaTableName}DO);
-    throw new NotImplementedException();
-  }
-
+   @Override
    public ${clazz.getClassName()}DO add(${clazz.getClassName()}Param ${table.javaTableName}Param) {
-   // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
+   // ${clazz.getClassName()}DO  ${table.javaTableName}DO = new ${clazz.getClassName()}DO();
 
    // ${table.javaTableName}Dao.add(${table.javaTableName}DO);
 
@@ -61,15 +53,32 @@ public class ${clazz.getClassName()}ServiceImpl implements I${clazz.getClassName
 
   @Override
   public $!{clazz.getClassName()}DO update($!{clazz.getClassName()}Param $!{table.javaTableName}Param){
-   // ${clazz.getClassName()}DO  ${table.javaTableName}DO = null;
-   // ${table.javaTableName}Dao.update(${table.javaTableName}DO);
-    throw new NotImplementedException();
+      $!{clazz.getClassName()}DO  $!{table.javaTableName}DO = $!{table.javaTableName}Dao.getById($!{table.javaTableName}Param.getId());
+      Preconditions.checkNotNull($!{table.javaTableName}DO,"$!{table.javaTableName} is null " + $!{table.javaTableName}Param.getId());
+
+    // ${table.javaTableName}Dao.update(${table.javaTableName}DO);
+     throw new NotImplementedException();
   }
   
   @Override
   public $!{clazz.getClassName()}DO getById(int id) {
 
-   // return $!{table.javaTableName}Dao.getById(id);
-    throw new NotImplementedException();
+    return $!{table.javaTableName}Dao.getById(id);
   }
+
+    @Override public void online(int id) {
+        ${clazz.getClassName()}DO $!{table.javaTableName}DO = $!{table.javaTableName}Dao.getById(id);
+        Preconditions.checkNotNull($!{table.javaTableName}DO,"$!{table.javaTableName} " + id + "is null");
+
+        //$!{table.javaTableName}Dao.update($!{table.javaTableName}DO);
+        throw new NotImplementedException();
+    }
+
+    @Override public void offline(int id) {
+        ${clazz.getClassName()}DO $!{table.javaTableName}DO = $!{table.javaTableName}Dao.getById(id);
+        Preconditions.checkNotNull($!{table.javaTableName}DO,"$!{table.javaTableName} " + id + "is null");
+
+        //$!{table.javaTableName}Dao.update($!{table.javaTableName}DO);
+
+    }
 }

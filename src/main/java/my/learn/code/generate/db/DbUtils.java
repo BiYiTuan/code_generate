@@ -16,7 +16,7 @@ import java.util.Date;
 public class DbUtils {
 	private static Log log = LogFactory.getLog(DbUtils.class);
 
-	public static Table getTableByName(String tableName,DataSource db){
+	public static Table getTableByName(String tableName,DataSource db,String tablePrefix){
 		Connection conn=null;
 		PreparedStatement pstmt =null;
 		ResultSet rs = null;
@@ -31,7 +31,7 @@ public class DbUtils {
 			Table tb = new Table();
 
 			// System.out.println(Table.getFormatTablename(tableName));
-			tb.setJavaTableName(convertName(tableName.replace("dss_","")));
+			tb.setJavaTableName(convertName(tableName.replace("tablePrefix","")));
 			tb.setDbTableName(tableName);
 
 			 rs = pstmt.executeQuery();

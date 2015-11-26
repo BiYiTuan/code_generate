@@ -27,14 +27,13 @@ public class ClazzUtils {
 
     for(Column column : table.getColumns()){
       insertFieldList += "," + column.getDbName();
-      insertValueList += ",#{" + column.getJavaName() + "}";
-
-      if (column.getDbName().equals(column.getJavaName())){
-        selectFieldList += "," + column.getDbName();
+      if ("update_time".equals(column.getDbName()) || "create_time".equals(column.getDbName())){
+        insertValueList += ",now()";
       }else {
-        selectFieldList += "," + column.getDbName() + " as " + column.getJavaName();
+        insertValueList += ",#{" + column.getJavaName() + "}";
       }
 
+      selectFieldList += "," + column.getDbName();
     }
 
     insertFieldList = insertFieldList.substring(1);

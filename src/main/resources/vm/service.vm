@@ -1,9 +1,8 @@
-package ${clazz.getServicePackage()};;
+package ${clazz.getServicePackage()};
 
 import ${clazz.getDomainPackage()}.$!{clazz.getClassName()}DO;
 import ${clazz.getParamPackage()}.$!{clazz.getClassName()}Param;
-
-import java.util.List;
+import ${clazz.getModelPackage()}.PageModel;
 
 /**
  * Desc:
@@ -13,14 +12,15 @@ import java.util.List;
  * Time: ${time}
  */
 public interface I$!{clazz.getClassName()}Service {
-  List<$!{clazz.getClassName()}DO> getPageList($!{clazz.getClassName()}Param param,int offset,int limit);
-
-  int count($!{clazz.getClassName()}Param param);
-
+  PageModel<$!{clazz.getClassName()}DO> getPageList($!{clazz.getClassName()}Param param,int offset,int limit);
 
   $!{clazz.getClassName()}DO add($!{clazz.getClassName()}Param $!{table.javaTableName}Param);
 
   $!{clazz.getClassName()}DO update($!{clazz.getClassName()}Param $!{table.javaTableName}Param);
 
   $!{clazz.getClassName()}DO getById(int id);
+
+  void online(int id);
+
+  void offline(int id);
 }

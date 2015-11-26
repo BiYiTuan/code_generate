@@ -11,7 +11,7 @@
         <if test="param.${col.javaName} != null and param.${col.javaName} != '' ">
             and ${col.dbName} like "%"#{param.${col.javaName}}"%"
         </if>
-                #elseif(${col.javaType} == 'int' || ${col.javaType} == 'long' || || ${col.javaType} == 'short')
+                #elseif(${col.javaType} == 'int' || ${col.javaType} == 'long' || ${col.javaType} == 'short')
         <if test="param.${col.javaName} != 0  ">
             and ${col.dbName} = #{param.${col.javaName}}
         </if>
