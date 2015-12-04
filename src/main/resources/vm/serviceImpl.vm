@@ -8,6 +8,7 @@ import ${clazz.getParamPackage()}.${clazz.getClassName()}Param;
 import ${clazz.getServicePackage()}.I${clazz.getClassName()}Service;
 import ${clazz.getModelPackage()}.PageModel;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -44,7 +45,7 @@ public class ${clazz.getClassName()}ServiceImpl implements I${clazz.getClassName
    @Override
    public ${clazz.getClassName()}DO add(${clazz.getClassName()}Param ${table.javaTableName}Param) {
    // ${clazz.getClassName()}DO  ${table.javaTableName}DO = new ${clazz.getClassName()}DO();
-
+      BeanUtils.copyProperties(${table.javaTableName}Param, ${table.javaTableName}DO);
    // ${table.javaTableName}Dao.add(${table.javaTableName}DO);
 
    //return ${table.javaTableName}DO;

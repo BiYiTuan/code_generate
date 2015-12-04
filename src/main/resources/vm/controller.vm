@@ -70,9 +70,10 @@ public class ${clazz.getClassName()}Controller {
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ApiResultModel update(@RequestBody ${clazz.getClassName()}Param param) {
+    public ApiResultModel update(@PathVariable int id,@RequestBody ${clazz.getClassName()}Param param) {
         ApiResultModel objectModel = new ApiResultModel();
         try {
+            param.setId(id);
            ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.update(param);
             objectModel.setData(${table.javaTableName}DO);
         } catch (Exception e) {
