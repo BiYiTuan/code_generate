@@ -1,0 +1,37 @@
+package ${clazz.getAdvicePackage()};
+
+
+import ${clazz.getModelPackage()}.ApiResultModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+* Desc:
+* ------------------------------------
+* Author: ${clazz.archetypes.author}
+* Date: ${date}
+* Time: ${time}
+*/
+@ControllerAdvice
+public class ControllerExceptionAdvice {
+private static Logger log = LoggerFactory.getLogger(ControllerExceptionAdvice.class);
+
+
+
+@ExceptionHandler
+@ResponseBody
+public ApiResultModel exceptionHandler(Exception ex, HttpServletRequest request) {
+String url = request.getRequestURL().toString();
+
+
+log.error("controller exceptionHandler. url:" + url, ex);
+
+return ApiResultModel.errorModel(ex.getMessage());
+}
+
+}

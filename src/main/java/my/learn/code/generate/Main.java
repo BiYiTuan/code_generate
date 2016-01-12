@@ -31,7 +31,7 @@ public class Main {
 
 		DataSource db= new DataSource(config);
 
-		Table table = DbUtils.getTableByName("dss_food",db,"dss_");
+		Table table = DbUtils.getTableByName("dss_award_signin",db,"dss_");
 
 		ClazzUtils clazz = new ClazzUtils(archetypes,table);
 
@@ -40,14 +40,14 @@ public class Main {
 
 		DomainCreater.getInstance().create(clazz);
 		DaoCreater.getInstance().create(clazz);
-		MybatisXMLMapperCreater.getInstance().create(clazz);
-		ServiceCreater.getInstance().create(clazz);
-		ServiceImplCreater.getInstance().create(clazz);
-		ModelCreater.getInstance().create(clazz);
+//		MybatisXMLMapperCreater.getInstance().create(clazz);
+//		ServiceCreater.getInstance().create(clazz);
+//		ServiceImplCreater.getInstance().create(clazz);
+//		ModelCreater.getInstance().create(clazz);
 
-		ParamCreater.getInstance().create(clazz);
-		ControllerCreater.getInstance().create(clazz);
-
+//		ParamCreater.getInstance().create(clazz);
+//		ControllerCreater.getInstance().create(clazz);
+		ControllerExceptionAdviceCreater.getInstance().create(clazz);
 
 
 

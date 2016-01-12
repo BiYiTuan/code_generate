@@ -31,7 +31,7 @@ public class DbUtils {
 			Table tb = new Table();
 
 			// System.out.println(Table.getFormatTablename(tableName));
-			tb.setJavaTableName(convertName(tableName.replace("tablePrefix","")));
+			tb.setJavaTableName(convertName(tableName.replace(tablePrefix,"")));
 			tb.setDbTableName(tableName);
 
 			 rs = pstmt.executeQuery();

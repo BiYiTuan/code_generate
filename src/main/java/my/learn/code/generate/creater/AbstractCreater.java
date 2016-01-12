@@ -38,7 +38,7 @@ public abstract class AbstractCreater {
             File f = FileUtils
                     .getFile(getFilePath(clazz));
             if(f.exists()){ //TODO
-//                   return;
+                   return;
             }
 
             org.apache.commons.io.FileUtils.write(f,str,"UTF-8");
@@ -48,6 +48,8 @@ public abstract class AbstractCreater {
             ex.printStackTrace();
         }
     }
+
+
 
     protected abstract String getFilePath(ClazzUtils clazz);
     protected abstract String getTemplate();

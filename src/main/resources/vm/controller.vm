@@ -38,15 +38,8 @@ public class ${clazz.getClassName()}Controller {
     public ApiResultModel getById(@PathVariable int id) {
 
         ApiResultModel objectModel = new ApiResultModel();
-        try {
-            ${clazz.getClassName()}DO ${table.javaTableName}DO  = ${table.javaTableName}Service.getById(id);
-            objectModel.setData(${table.javaTableName}DO);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            objectModel.setStatus(-1);
-            objectModel.setMessage(e.getMessage());
-        }
-
+        ${clazz.getClassName()}DO ${table.javaTableName}DO  = ${table.javaTableName}Service.getById(id);
+        objectModel.setData(${table.javaTableName}DO);
         return objectModel;
     }
 
@@ -55,16 +48,10 @@ public class ${clazz.getClassName()}Controller {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ApiResultModel add(@RequestBody ${clazz.getClassName()}Param param) {
         ApiResultModel objectModel = new ApiResultModel();
-        try {
-            ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.add(param);
-            ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
-            objectModel.setData(${table.javaTableName}Model);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            objectModel.setStatus(-1);
-            objectModel.setMessage(e.getMessage());
-        }
 
+        ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.add(param);
+        ${clazz.getClassName()}Model ${table.javaTableName}Model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
+        objectModel.setData(${table.javaTableName}Model);
         return objectModel;
     }
 
@@ -72,16 +59,9 @@ public class ${clazz.getClassName()}Controller {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ApiResultModel update(@PathVariable int id,@RequestBody ${clazz.getClassName()}Param param) {
         ApiResultModel objectModel = new ApiResultModel();
-        try {
-            param.setId(id);
-           ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.update(param);
-            objectModel.setData(${table.javaTableName}DO);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            objectModel.setStatus(-1);
-            objectModel.setMessage(e.getMessage());
-        }
-
+        param.setId(id);
+        ${clazz.getClassName()}DO ${table.javaTableName}DO = ${table.javaTableName}Service.update(param);
+        objectModel.setData(${table.javaTableName}DO);
         return objectModel;
     }
 
@@ -91,34 +71,24 @@ public class ${clazz.getClassName()}Controller {
     public ApiResultModel getPageList(@RequestParam(defaultValue = "0") int offset,
                                     @RequestParam(defaultValue = "10") int limit,
                                     ${clazz.getClassName()}Param param) {
-        try {
-            PageModel<${clazz.getClassName()}DO> pageModel = ${table.javaTableName}Service.getPageList(param, offset, limit);
-            List<${clazz.getClassName()}Model> ${table.javaTableName}Models = new ArrayList<${clazz.getClassName()}Model>(CollectionUtils.size(pageModel.getData()));
 
-            ${clazz.getClassName()}Model model = null;
-            for (${clazz.getClassName()}DO ${table.javaTableName}DO : pageModel.getData()) {
-                 model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
-                 ${table.javaTableName}Models.add(model);
-            }
-            return new ApiResultModel(${table.javaTableName}Models, pageModel.getCount(), offset, limit);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ApiResultModel.errorModel(e.getMessage());
+        PageModel<${clazz.getClassName()}DO> pageModel = ${table.javaTableName}Service.getPageList(param, offset, limit);
+        List<${clazz.getClassName()}Model> ${table.javaTableName}Models = new ArrayList<${clazz.getClassName()}Model>(CollectionUtils.size(pageModel.getData()));
+
+        ${clazz.getClassName()}Model model = null;
+        for (${clazz.getClassName()}DO ${table.javaTableName}DO : pageModel.getData()) {
+             model = new ${clazz.getClassName()}Model(${table.javaTableName}DO);
+             ${table.javaTableName}Models.add(model);
         }
+        return new ApiResultModel(${table.javaTableName}Models, pageModel.getCount(), offset, limit);
+
     }
 
     @ResponseBody
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ApiResultModel online(@PathVariable int id) {
         ApiResultModel objectModel = new ApiResultModel();
-        try {
-            ${table.javaTableName}Service.online(id);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            objectModel.setStatus(-1);
-            objectModel.setMessage(e.getMessage());
-        }
-
+        ${table.javaTableName}Service.online(id);
         return objectModel;
     }
 
@@ -126,14 +96,7 @@ public class ${clazz.getClassName()}Controller {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ApiResultModel offline(@PathVariable int id) {
         ApiResultModel objectModel = new ApiResultModel();
-        try {
-            ${table.javaTableName}Service.offline(id);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            objectModel.setStatus(-1);
-            objectModel.setMessage(e.getMessage());
-        }
-
+        ${table.javaTableName}Service.offline(id);
         return objectModel;
     }
 }

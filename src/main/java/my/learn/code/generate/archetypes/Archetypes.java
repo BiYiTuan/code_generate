@@ -35,6 +35,7 @@ public class Archetypes {
     private String serviceFolder = "service";
     private String controllerFolder = "web";
     private String paramFolder = "param";
+    private String adviceFolder = "advice";
 
     public Archetypes(Properties config) {
 
@@ -100,6 +101,10 @@ public class Archetypes {
 
         return this.getDefaultJavaPackagePath() + "/" + controllerFolder;
     }
+    public String getAdivcePath() {
+
+        return this.getDefaultJavaPackagePath() + "/" + adviceFolder;
+    }
 
     public String getMybatisXMLMapperPath() {
         return this.getResourcesPath() + "/base/dao/xmlMapper";
@@ -139,5 +144,9 @@ public class Archetypes {
 
     public String getAuthor() {
         return author;
+    }
+
+    public String getAdviceFolder(){
+        return this.adviceFolder;
     }
 }

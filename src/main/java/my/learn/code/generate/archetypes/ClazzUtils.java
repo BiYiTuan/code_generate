@@ -63,6 +63,9 @@ public class ClazzUtils {
   public String getControllerPackage(){
     return archetypes.getDefaultJavaPackage() + "." + archetypes.getControllerFolder();
   }
+  public String getAdvicePackage(){
+    return archetypes.getDefaultJavaPackage() + "." + archetypes.getAdviceFolder();
+  }
   public String getModelPackage(){
     return archetypes.getDefaultJavaPackage() + "." + archetypes.getModelFolder();
   }
